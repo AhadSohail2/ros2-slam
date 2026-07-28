@@ -1,0 +1,45 @@
+# ROS workspace
+build/
+**/build/
+devel/
+install/
+log/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor temp files
+*.swp
+*~
+*.tmp
+*.bak
+*.orig
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build artifacts
+*.o
+*.so
+*.a
+*.pyc
+
+# Gazebo and simulation
+*.log
+
+# Firmware and build artifacts
+*.elf
+*.bin
+*.hex
