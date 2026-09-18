@@ -1,11 +1,28 @@
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+    use_slam = LaunchConfiguration("use_slam")
+    map_yaml = LaunchConfiguration("map_yaml")
+
+    use_slam_arg = DeclareLaunchArgument(
+        "use_slam", default_value="true",
+        description="Run SLAM; set false to load map_yaml instead."
+    )
+    map_yaml_arg = DeclareLaunchArgument(
+        "map_yaml",
+        default_value=os.path.join(
+            get_package_share_directory("bumperbot_mapping"),
+            "maps", "small_house", "map.yaml"
+        ),
+        description="Map YAML to load when use_slam:=false"
+    )
+
     hardware_interface = IncludeLaunchDescription(
         os.path.join(
             get_package_share_directory("bumperbot_firmware"),
@@ -65,9 +82,16 @@ def generate_launch_description():
             "launch",
             "slam.launch.py"
         ),
+        launch_arguments={
+            "use_sim_time": "false",
+            "use_slam": use_slam,
+            "map_yaml": map_yaml,
+        }.items(),
     )
     
     return LaunchDescription([
+        use_slam_arg,
+        map_yaml_arg,
         hardware_interface,
         laser_driver,
         controller,
